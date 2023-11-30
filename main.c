@@ -3,13 +3,13 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
-#include "functions.h"
+#include "header.h"
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
 const int SCREEN_WIDTH = 860;
-const int SCREEN_HEIGHT = 640;
+const int SCREEN_HEIGHT = 576;
 
 int main()
 {
@@ -24,6 +24,15 @@ int main()
     renderer = SDL_CreateRenderer(window,
                                   -1,
                                   SDL_RENDERER_ACCELERATED);
+
+    DrawGame G = 
+    {
+        G.screen_width = SCREEN_WIDTH,
+        G.screen_height = SCREEN_HEIGHT,
+        G.start_x = 32,
+        G.start_y = 32,
+        G.scale = 64
+    };
 
     SDL_bool running = SDL_TRUE;
     while (running)
@@ -50,6 +59,9 @@ int main()
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
+
+        draw_board(renderer, &G);
+
 
         SDL_RenderPresent(renderer);
         SDL_Delay(100);
