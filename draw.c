@@ -40,6 +40,26 @@ void draw_board(SDL_Renderer* renderer, DrawGame* G)
     }
 }
 
+void print_board(int *board, char *pieces)
+{
+    int i, j, piece;
+    int row = 8, col = 8, shift = 0;
+
+    printf("\n"); 
+    for (i = 0; i < row; i++)
+    {
+        printf(" %d  ", 8 - i);
+        for (j = 0; j < col; j++)
+        {
+            piece = board[i+shift + j];
+            printf("%c ", pieces[piece]); 
+        }
+        shift += 15;
+        printf("\n");
+    }
+    printf("\n    a b c d e f g h\n");
+}
+
 
 
 
