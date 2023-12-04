@@ -58,6 +58,7 @@ void print_board(int *board, char *pieces)
         printf("\n");
     }
     printf("\n    a b c d e f g h\n");
+    printf("\n");
 }
 
 
