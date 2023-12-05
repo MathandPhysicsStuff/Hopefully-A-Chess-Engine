@@ -40,26 +40,127 @@ void draw_board(SDL_Renderer* renderer, DrawGame* G)
     }
 }
 
-void print_board(int *board, char *pieces)
+void print_board(int *board, char *pieces, char **square_to_coords, GameRules *R)
 {
-    int i, j, piece;
-    int row = 8, col = 8, shift = 0;
+    int rank, file, square;
 
     printf("\n"); 
-    for (i = 0; i < row; i++)
+    for (rank = 0; rank < 8; rank++)
     {
-        printf(" %d  ", 8 - i);
-        for (j = 0; j < col; j++)
+        printf(" %d  ", 8 - rank);
+        for (file = 0; file < 16; file++)
         {
-            piece = board[i+shift + j];
-            printf("%c ", pieces[piece]); 
+            square = 16*rank + file;
+
+            if (!(square & 0x88))
+                printf("%c ", pieces[board[square]]); 
         }
-        shift += 15;
         printf("\n");
     }
     printf("\n    a b c d e f g h\n");
     printf("\n");
+    
+    printf(" Side to move: %s\n", (R->side_to_move == White) ? "White": "Black");
+    printf(" Castling: %c", (R->castling & KC) ? 'K' : '-');
+    printf("%c", (R->castling & QC) ? 'Q' : '-');
+    printf("%c", (R->castling & kc) ? 'k' : '-');
+    printf("%c\n", (R->castling & qc) ? 'q' : '-');
+
+    printf(" Enpassant: %s\n", square_to_coords[R->enpassant]);
 }
+
+void reset_board(int *board, GameRules *R)
+{
+    int rank, file, square;
+
+    for (rank = 0; rank < 8; rank++)
+    {
+        for (file = 0; file < 16; file++)
+        {
+            square = 16*rank + file;
+
+            if (!(square & 0x88))
+                board[square] = e; 
+        }
+    }
+    R->side_to_move = White;
+    R->castling = 0;
+    R->enpassant = no_square;
+}
+
+
+void parse_FEN(int *board, int *char_pieces, char **square_to_coords, char *fen, GameRules *R)
+{
+    int rank, file, square;
+    
+    reset_board(board, R);
+
+    for (rank = 0; rank < 8; rank++)
+    {
+        for (file = 0; file < 16; file++)
+        {
+            square = 16*rank + file;
+
+            if (!(square & 0x88))
+            {
+                if ((*fen >= 'a' && *fen <= 'z') || (*fen >= 'A' && *fen <= 'Z'))
+                {
+                    board[square] = char_pieces[*fen];
+                    fen++;
+                }
+                if (*fen >= '1' && *fen <= '8')
+                {
+                    if (board[square] == e)
+                        file--;
+
+                    file += *fen - '0';
+                    fen++;
+                }
+                if (*fen == '/')
+                    fen++;
+            }
+        }
+    }
+    
+    *fen++;
+
+    if (*fen == 'w') R->side_to_move = White;
+    if (*fen == 'b') R->side_to_move = Black;
+
+    *fen++;
+    *fen++;
+
+    while (*fen != ' ')
+    {
+        switch(*fen)
+        {
+            case 'K': R->castling |= KC; break;
+            case 'Q': R->castling |= QC; break;
+            case 'k': R->castling |= kc; break;
+            case 'q': R->castling |= qc; break;
+            case '-': break;
+
+        }
+        *fen++;
+    }
+
+    *fen++;
+
+    if (*fen != '-')
+    {
+        file = fen[0] - 'a';
+        rank = 8 - (fen[1] - '0');
+
+        R->enpassant = 16*rank + file;
+        printf("%i\n", R->enpassant);
+    }
+
+    else R->enpassant = no_square;
+
+    printf("%s\n", fen);
+    printf("%c\n", *fen);
+}
+
 
 
 

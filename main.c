@@ -11,6 +11,9 @@ static SDL_Renderer *renderer = NULL;
 const int SCREEN_WIDTH = 860;
 const int SCREEN_HEIGHT = 576;
 
+char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+
 int board[128] =
 {
     r, n, b, q, k, b, n, r,  o, o, o, o, o, o, o, o,
@@ -75,8 +78,16 @@ int main()
         G.start_y = 32,
         G.scale = 64
     };
+
+    GameRules R =
+    {
+        R.side_to_move = White,
+        R.enpassant = no_square,
+        R.castling = 0
+    };
     
-    print_board(board, ascii_pieces);
+    parse_FEN(board, char_pieces, square_to_coords, debug_position, &R); 
+    print_board(board, ascii_pieces, square_to_coords, &R);
     
     return 0;
 
