@@ -44,6 +44,7 @@ typedef struct GameRules
 //Draw board and pieces
 void print_board(int *board, char *pieces, char **square_to_coords, GameRules *R);
 void draw_board(SDL_Renderer* renderer, DrawGame* G);
+void draw_pieces(SDL_Renderer *renderer, DrawGame *G, int *board, SDL_Texture *image, SDL_Rect piece_src_rect, SDL_Rect piece_dst_rect);
 void reset_board(int *board, GameRules *R);
 void parse_FEN(int *board, int *char_pieces, char **square_to_coords, char *fen, GameRules *R);
 

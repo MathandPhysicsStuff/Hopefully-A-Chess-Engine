@@ -1,6 +1,5 @@
 #include "header.h"
 
-
 void draw_board(SDL_Renderer* renderer, DrawGame* G)
 {
     int i, j;
@@ -37,6 +36,103 @@ void draw_board(SDL_Renderer* renderer, DrawGame* G)
         }
         square.y += G->scale;
         square_counter += 1;
+    }
+}
+
+void draw_pieces(SDL_Renderer *renderer, DrawGame *G, int *board, SDL_Texture *image, SDL_Rect piece_src_rect, SDL_Rect piece_dst_rect)
+{
+    int rank, file, square;
+    
+    piece_src_rect.x = G->start_x; 
+    piece_src_rect.y = G->start_y - 32; 
+
+    for (rank = 0; rank < 8; rank++)
+    {
+        piece_src_rect.x = G->start_x;
+        for (file = 0; file < 16; file++)
+        {
+            square = 16*rank + file;
+
+            if (!(square & 0x88))
+                //SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                switch(board[square])
+                {
+                    case P:
+                        piece_dst_rect.x = 300;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case N:
+                        piece_dst_rect.x = 180;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case B:
+                        piece_dst_rect.x = 240;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case R:
+                        piece_dst_rect.x = 120;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case Q:
+                        piece_dst_rect.x = 0;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case K:
+                        piece_dst_rect.x = 60;
+                        piece_dst_rect.y = 60;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case p:
+                        piece_dst_rect.x = 300;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case n:
+                        piece_dst_rect.x = 180;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case b:
+                        piece_dst_rect.x = 240;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case r:
+                        piece_dst_rect.x = 120;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case q:
+                        piece_dst_rect.x = 0;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+
+                    case k:
+                        piece_dst_rect.x = 60;
+                        piece_dst_rect.y = 0;
+                        SDL_RenderCopy(renderer, image, &piece_dst_rect, &piece_src_rect);
+                        break;
+                }
+
+            piece_src_rect.x += G->scale;
+        }
+        piece_src_rect.y += G->scale;
     }
 }
 
@@ -157,8 +253,8 @@ void parse_FEN(int *board, int *char_pieces, char **square_to_coords, char *fen,
 
     else R->enpassant = no_square;
 
-    printf("%s\n", fen);
-    printf("%c\n", *fen);
+    //printf("%s\n", fen);
+    //printf("%c\n", *fen);
 }
 
 

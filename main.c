@@ -70,6 +70,16 @@ int main()
                                   -1,
                                   SDL_RENDERER_ACCELERATED);
 
+    int flags = IMG_INIT_PNG;
+    int init_status = IMG_Init(flags);
+    if ((init_status & flags) != flags) printf("image init error\n"); 
+
+    SDL_Surface* image;
+    image = IMG_Load("ChessPiecesArray.png");
+    if (!image) { printf("Image not loaded.\n"); }
+
+    SDL_Texture* texturePGN = SDL_CreateTextureFromSurface(renderer, image);
+   
     DrawGame G = 
     {
         G.screen_width = SCREEN_WIDTH,
@@ -86,10 +96,13 @@ int main()
         R.castling = 0
     };
     
+    SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
+    SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
+ 
     parse_FEN(board, char_pieces, square_to_coords, debug_position, &R); 
-    print_board(board, ascii_pieces, square_to_coords, &R);
+    //print_board(board, ascii_pieces, square_to_coords, &R);
     
-    return 0;
+    //return 0;
 
     SDL_bool running = SDL_TRUE;
     while (running)
@@ -117,14 +130,16 @@ int main()
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
-        draw_board(renderer, &G);
 
+        draw_board(renderer, &G);
+        draw_pieces(renderer, &G, board, texturePGN, piece_dst_rect, piece_src_rect);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(100);
     }
     
     //freeing stuff 
+    IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
