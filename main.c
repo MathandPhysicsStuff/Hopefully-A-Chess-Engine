@@ -11,9 +11,6 @@ static SDL_Renderer *renderer = NULL;
 const int SCREEN_WIDTH = 860;
 const int SCREEN_HEIGHT = 576;
 
-char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-
 int board[128] =
 {
     r, n, b, q, k, b, n, r,  o, o, o, o, o, o, o, o,
@@ -26,35 +23,10 @@ int board[128] =
     R, N, B, Q, K, B, N, R,  o, o, o, o, o, o, o, o
 };
 
-char ascii_pieces[14] = ".PNBRQKpnbrqko";
-    
-int char_pieces[] =
-{
-    ['P'] = P,
-    ['N'] = N,
-    ['B'] = B,
-    ['R'] = R,
-    ['Q'] = Q,
-    ['K'] = K,
-    ['p'] = p,
-    ['n'] = n,
-    ['b'] = b,
-    ['r'] = r,
-    ['q'] = q,
-    ['k'] = k
-};
-
-char *square_to_coords[] = {
-    "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8", "i8", "j8", "k8", "l8", "m8", "n8", "o8", "p8",
-    "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7", "i7", "j7", "k7", "l7", "m7", "n7", "o7", "p7",
-    "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6", "i6", "j6", "k6", "l6", "m6", "n6", "o6", "p6",
-    "a5", "b5", "c5", "d5", "e5", "f5", "g5", "h5", "i5", "j5", "k5", "l5", "m5", "n5", "o5", "p5",
-    "a4", "b4", "c4", "d4", "e4", "f4", "g4", "h4", "i4", "j4", "k4", "l4", "m4", "n4", "o4", "p4",
-    "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3", "i3", "j3", "k3", "l3", "m3", "n3", "o3", "p3",
-    "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2", "i2", "j2", "k2", "l2", "m2", "n2", "o2", "p2",
-    "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1", "i1", "j1", "k1", "l1", "m1", "n1", "o1", "p1"
-};
-
+char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+char debug2_position[] = "4k3/8/8/P7/3P4/7P/8/4K3 w - 0 1";
+char debug3_position[] = "8/8/8/8/1P2Q3/8/8/8 w - 0 1";
 
 int main()
 {
@@ -89,20 +61,23 @@ int main()
         G.scale = 64
     };
 
-    GameRules R =
+    GameRules GR =
     {
-        R.side_to_move = White,
-        R.enpassant = no_square,
-        R.castling = 0
+        GR.side_to_move = White,
+        GR.enpassant = no_square,
+        GR.castling = 0,
+
     };
     
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
- 
-    parse_FEN(board, char_pieces, square_to_coords, debug_position, &R); 
-    //print_board(board, ascii_pieces, square_to_coords, &R);
+
+    parse_FEN(board, debug3_position, &GR); 
+
+    print_board(board, &GR);
+    print_attack_squares(board, &GR);
     
-    //return 0;
+    return 0;
 
     SDL_bool running = SDL_TRUE;
     while (running)
@@ -132,7 +107,7 @@ int main()
 
 
         draw_board(renderer, &G);
-        draw_pieces(renderer, &G, board, texturePGN, piece_dst_rect, piece_src_rect);
+        draw_pieces(board, renderer, &G, texturePGN, piece_dst_rect, piece_src_rect);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(100);
