@@ -162,7 +162,7 @@ void print_board(int *board, GameRules *GR)
     printf("%c", (GR->castling & kc) ? 'k' : '-');
     printf("%c\n", (GR->castling & qc) ? 'q' : '-');
 
-    printf(" Enpassant: %s\n", square_to_coords[GR->enpassant]);
+    printf(" Enpassant: %s\n", (GR->enpassant == no_square) ? " ": square_to_coords[GR->enpassant]);
 }
 
 void print_attack_squares(int *board, GameRules *GR)

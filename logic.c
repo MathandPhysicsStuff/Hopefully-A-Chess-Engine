@@ -83,7 +83,131 @@ int is_square_attacked(int *board, GameRules *GR, int square)
     return 0;
 }
 
+void generate_moves(int *board, GameRules *GR)
+{
+    int i, square, pawn_offset, target_square;
 
+    for (square = 0; square < 128; square++)
+    {
+        if (!(square & 0x88))
+        {
+            if (GR->side_to_move == White)
+            {
+                if (board[square] == P)
+                {
+                    if (!(!(square - 16) & 0x88) && (board[square - 16] == e))
+                    {
+                        if (square >= a7 && square <= h7)
+                        {
+                            printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square - 16]);
+                            printf("%s %s=N\n", square_to_coords[square], square_to_coords[square - 16]);
+                            printf("%s %s=R\n", square_to_coords[square], square_to_coords[square - 16]);
+                            printf("%s %s=B\n", square_to_coords[square], square_to_coords[square - 16]);
+                        }
+                        
+                        else
+                        {
+                            printf("%s %s\n", square_to_coords[square], square_to_coords[square - 16]);
+                            if (square >= a2 && square <= h2 && board[square - 32] == e)
+                            {
+                                printf("%s %s\n", square_to_coords[square], square_to_coords[square - 32]);
+                            }
+                        }
+                    }
+
+                    for (i = 0; i < 4; i++)
+                    {
+                        pawn_offset = bishop_offsets[i];
+
+                        if (pawn_offset < 0)
+                        {
+                            target_square = square + pawn_offset;
+
+                            if(!(target_square & 0x88))
+                            {
+                                if((square >= a7 && square <= h7) && (board[target_square] >= p && board[target_square] <= k))
+                                {
+                                    printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+
+                                if(board[target_square] >= p && board[target_square] <= k)
+                                {
+                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+
+                                if(target_square == GR->enpassant)
+                                {
+                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            else
+            {
+                if (board[square] == p)
+                {
+                    if (!(!(square + 16) & 0x88) && (board[square + 16] == e))
+                    {
+                        if (square >= a2 && square <= h2)
+                        {
+                            printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square + 16]);
+                            printf("%s %s=N\n", square_to_coords[square], square_to_coords[square + 16]);
+                            printf("%s %s=R\n", square_to_coords[square], square_to_coords[square + 16]);
+                            printf("%s %s=B\n", square_to_coords[square], square_to_coords[square + 16]);
+                        }
+                        
+                        else
+                        {
+                            printf("%s %s\n", square_to_coords[square], square_to_coords[square + 16]);
+                            if (square >= a7 && square <= h7 && board[square + 32] == e)
+                            {
+                                printf("%s %s\n", square_to_coords[square], square_to_coords[square + 32]);
+                            }
+                        }
+                    }
+
+                    for (i = 0; i < 4; i++)
+                    {
+                        pawn_offset = bishop_offsets[i];
+
+                        if (pawn_offset > 0)
+                        {
+                            target_square = square + pawn_offset;
+
+                            if(!(target_square & 0x88))
+                            {
+                                if((square >= a2 && square <= h2) && (board[target_square] >= P && board[target_square] <= K))
+                                {
+                                    printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
+                                    printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+
+                                if(board[target_square] >= K && board[target_square] <= K)
+                                {
+                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+
+                                if(target_square == GR->enpassant)
+                                {
+                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}
 
 
 

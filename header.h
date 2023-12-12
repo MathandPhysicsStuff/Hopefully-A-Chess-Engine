@@ -94,6 +94,7 @@ void parse_FEN(int *board, char *fen, GameRules *GR);
 
 //logic: rules of chess
 int is_square_attacked(int *board, GameRules *GR, int square);
+void generate_moves(int *board, GameRules *GR);
 
 //Engine: search eval;
 

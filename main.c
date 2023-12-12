@@ -25,8 +25,9 @@ int board[128] =
 
 char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
-char debug2_position[] = "4k3/8/8/P7/3P4/7P/8/4K3 w - 0 1";
+char debug2_position[] = "4k3/6P1/8/P7/3P4/7P/8/4K3 w - 0 1";
 char debug3_position[] = "8/8/8/8/1P2Q3/8/8/8 w - 0 1";
+char debug4_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/Pp2P3/2N2Q2/1PPBBPpP/R3K2R b KQkq a3 0 1"; 
 
 int main()
 {
@@ -72,10 +73,11 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    parse_FEN(board, debug3_position, &GR); 
+    parse_FEN(board, debug4_position, &GR); 
 
     print_board(board, &GR);
-    print_attack_squares(board, &GR);
+    generate_moves(board, &GR);
+    //print_attack_squares(board, &GR);
     
     return 0;
 
