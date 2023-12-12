@@ -6,6 +6,8 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
+enum boolean {False, TRUE};
+
 enum pieces {e, P, N, B, R, Q, K, p, n, b, r, q, k, o};
 
 enum castling {KC = 1, QC = 2, kc = 4, qc = 8};

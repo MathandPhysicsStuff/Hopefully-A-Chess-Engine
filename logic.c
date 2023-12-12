@@ -146,6 +146,32 @@ void generate_moves(int *board, GameRules *GR)
                         }
                     }
                 }
+
+                if (board[square] == K && board[e1] == K)
+                {
+                    if (GR->castling & KC)
+                    {
+                        if (board[f1] == e && board[g1] == e && board[h1] == R)
+                        {
+                            GR->side_to_move = Black;
+                            if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, f1) == 0)
+                                printf("0-0\n");
+                                GR->side_to_move = White;
+                        }
+                    }
+
+                    if (GR->castling & QC)
+                    {
+                        if (board[d1] == e && board[c1] == e && board[b1] == e && board[a1] == R)
+                        {
+                            GR->side_to_move = Black;
+                            if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, d1) == 0)
+                                printf("0-0-0\n");
+                                GR->side_to_move = White;
+                        }
+                    }
+
+                }
             }
 
             else
@@ -202,7 +228,31 @@ void generate_moves(int *board, GameRules *GR)
                             }
                         }
                     }
+                }
 
+                if (board[square] == k && board[e8] == k)
+                {
+                    if (GR->castling & kc)
+                    {
+                        if (board[f8] == e && board[g8] == e && board[h8] == r)
+                        {
+                            GR->side_to_move = White;
+                            if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, f8) == 0)
+                                printf("0-0\n");
+                                GR->side_to_move = Black;
+                        }
+                    }
+
+                    if (GR->castling & qc)
+                    {
+                        if (board[d8] == e && board[c8] == e && board[b8] == e && board[a8] == r)
+                        {
+                            GR->side_to_move = White;
+                            if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, d8) == 0)
+                                printf("0-0-0\n");
+                                GR->side_to_move = Black;
+                        }
+                    }
                 }
             }
         }
