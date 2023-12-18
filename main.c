@@ -70,14 +70,14 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "r3k2r/pppppppp/8/8/8/8/4P3/R3K2R b kq - 0 1";
+    char test_position[] = "7k/8/8/8/8/8/8/4K3 b - - 0 1";
     parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);
     generate_moves(board, &GR);
     //print_attack_squares(board, &GR);
     
-    return 0;
+    //return 0;
 
     SDL_bool running = SDL_TRUE;
     while (running)

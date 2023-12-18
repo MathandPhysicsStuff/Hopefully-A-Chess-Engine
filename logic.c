@@ -85,7 +85,7 @@ int is_square_attacked(int *board, GameRules *GR, int square)
 
 void generate_moves(int *board, GameRules *GR)
 {
-    int i, square, pawn_offset, target_square;
+    int i, square, piece_offset, target_square;
 
     for (square = 0; square < 128; square++)
     {
@@ -117,11 +117,11 @@ void generate_moves(int *board, GameRules *GR)
 
                     for (i = 0; i < 4; i++)
                     {
-                        pawn_offset = bishop_offsets[i];
+                        piece_offset = bishop_offsets[i];
 
-                        if (pawn_offset < 0)
+                        if (piece_offset < 0)
                         {
-                            target_square = square + pawn_offset;
+                            target_square = square + piece_offset;
 
                             if(!(target_square & 0x88))
                             {
@@ -170,7 +170,6 @@ void generate_moves(int *board, GameRules *GR)
                                 GR->side_to_move = White;
                         }
                     }
-
                 }
             }
 
@@ -200,11 +199,11 @@ void generate_moves(int *board, GameRules *GR)
 
                     for (i = 0; i < 4; i++)
                     {
-                        pawn_offset = bishop_offsets[i];
+                        piece_offset = bishop_offsets[i];
 
-                        if (pawn_offset > 0)
+                        if (piece_offset > 0)
                         {
-                            target_square = square + pawn_offset;
+                            target_square = square + piece_offset;
 
                             if(!(target_square & 0x88))
                             {
@@ -255,6 +254,55 @@ void generate_moves(int *board, GameRules *GR)
                     }
                 }
             }
+
+            if (GR->side_to_move == White ? board[square] == N : board[square] == n)
+            {
+                for(i = 0; i < 8; i++)
+                {
+                    target_square = square + knight_offsets[i];
+                    piece_offset = board[target_square];
+
+                    if (!(target_square & 0x88))
+                    {
+                        if (
+                            GR->side_to_move == White ?
+                            (piece_offset == e || (piece_offset >= p && piece_offset <= k)) :
+                            (piece_offset == e || (piece_offset >= P && piece_offset <= K))
+                            )
+                        {
+                            if (piece_offset != e)
+                                printf("Nx%s\n", square_to_coords[target_square]);
+                            else
+                                printf("N%s\n", square_to_coords[target_square]);
+                        }
+                    }
+                }
+            }
+
+            if (GR->side_to_move == White ? board[square] == K : board[square] == k)
+            {
+                for(i = 0; i < 8; i++)
+                {
+                    target_square = square + king_offsets[i];
+                    piece_offset = board[target_square];
+
+                    if (!(target_square & 0x88))
+                    {
+                        if (
+                            GR->side_to_move == White ?
+                            (piece_offset == e || (piece_offset >= p && piece_offset <= k)) :
+                            (piece_offset == e || (piece_offset >= P && piece_offset <= K))
+                            )
+                        {
+                            if (piece_offset != e)
+                                printf("Kx%s\n", square_to_coords[target_square]);
+                            else
+                                printf("K%s\n", square_to_coords[target_square]);
+                        }
+                    }
+                }
+            }
+
         }
     }
 }
