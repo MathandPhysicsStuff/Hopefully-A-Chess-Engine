@@ -70,7 +70,7 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "7k/8/8/8/8/8/8/4K3 b - - 0 1";
+    char test_position[] = "8/4n3/8/8/p3q2P/8/8/4N3 b - - 0 1";
     parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);

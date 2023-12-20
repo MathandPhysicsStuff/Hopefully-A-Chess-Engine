@@ -303,6 +303,91 @@ void generate_moves(int *board, GameRules *GR)
                 }
             }
 
+            if (GR->side_to_move == White ?
+                (board[square] == B || board[square] == Q) :
+                (board[square] == b || board[square] == q)
+               )
+            {
+                for (i = 0; i < 4; i++)
+                {
+                    target_square = square + bishop_offsets[i];
+                    
+                    while (!(target_square & 0x88))
+                    {
+                        piece_offset = board[target_square];
+
+                        if (GR->side_to_move == White ?
+                            (piece_offset >= P && piece_offset <= K) :
+                            (piece_offset >= p && piece_offset <= k)
+                           )
+                        {
+                            break; 
+                        }
+
+                        if (GR->side_to_move == White ?
+                            (piece_offset >= p && piece_offset <= k) :
+                            (piece_offset >= P && piece_offset <= K)
+                           )
+                        {
+                            if(board[square] == b || board[square] == B) printf("Bx%s\n", square_to_coords[target_square]);
+                            if(board[square] == q || board[square] == Q) printf("Qx%s\n", square_to_coords[target_square]);
+                            break; 
+                        }
+
+
+                        if (piece_offset == e)
+                        {
+                            if(board[square] == b || board[square] == B) printf("B%s\n", square_to_coords[target_square]);
+                            if(board[square] == q || board[square] == Q) printf("Q%s\n", square_to_coords[target_square]);
+                        }
+
+                        target_square += bishop_offsets[i];
+                    }
+                }
+            }
+
+            if (GR->side_to_move == White ?
+                (board[square] == R || board[square] == Q) :
+                (board[square] == r || board[square] == q)
+               )
+            {
+                for (i = 0; i < 4; i++)
+                {
+                    target_square = square + rook_offsets[i];
+                    
+                    while (!(target_square & 0x88))
+                    {
+                        piece_offset = board[target_square];
+
+                        if (GR->side_to_move == White ?
+                            (piece_offset >= P && piece_offset <= K) :
+                            (piece_offset >= p && piece_offset <= k)
+                           )
+                        {
+                            break; 
+                        }
+
+                        if (GR->side_to_move == White ?
+                            (piece_offset >= p && piece_offset <= k) :
+                            (piece_offset >= P && piece_offset <= K)
+                           )
+                        {
+                            if(board[square] == r || board[square] == R) printf("Rx%s\n", square_to_coords[target_square]);
+                            if(board[square] == q || board[square] == Q) printf("Qx%s\n", square_to_coords[target_square]);
+                            break; 
+                        }
+
+
+                        if (piece_offset == e)
+                        {
+                            if(board[square] == r || board[square] == R) printf("R%s\n", square_to_coords[target_square]);
+                            if(board[square] == q || board[square] == Q) printf("Q%s\n", square_to_coords[target_square]);
+                        }
+
+                        target_square += rook_offsets[i];
+                    }
+                }
+            }
         }
     }
 }
