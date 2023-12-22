@@ -6,6 +6,41 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
 
+/*
+    0000 0000 0000 0000 0111 1111 source square
+    0000 0000 0011 1111 1000 0000 target square 
+    0000 0011 1100 0000 0000 0000 promotion piece
+    0000 0100 0000 0000 0000 0000 capture flag
+    0000 1000 0000 0000 0000 0000 double pawn push flag
+    0001 0000 0000 0000 0000 0000 enpassant flag
+    0010 0000 0000 0000 0000 0000 caslting flag
+*/
+
+#define set_move(source, target, promote, capture, double_pawn, enpassant, castling) \
+(                           \
+    (source) |              \
+    (target << 7)   |       \
+    (promote << 14) |       \
+    (capture << 18) |       \
+    (double_pawn << 19) |   \
+    (enpassant << 20)   |   \
+    (castling << 21)        \
+)
+
+#define get_move_source(move) (move & 0x7F)
+
+#define get_move_target(move) ((move << 7) & 0x7F)
+
+#define get_move_promote(move) ((move << 14) & 0xF)
+
+#define get_move_capture(move) ((move << 18) & 0x1)
+
+#define get_move_double_pawn(move) ((move << 19) & 0x1)
+
+#define get_move_enpassant(move) ((move << 20) & 0x1)
+
+#define get_move_castling(move) ((move << 21) & 0x1)
+
 enum boolean {False, TRUE};
 
 enum pieces {e, P, N, B, R, Q, K, p, n, b, r, q, k, o};
@@ -53,6 +88,19 @@ static int char_pieces[] =
     ['q'] = q,
     ['k'] = k
 };
+
+static int promoted_pieces[] =
+{
+        [Q] = 'q',
+        [R] = 'r',
+        [B] = 'b',
+        [N] = 'n',
+        [q] = 'q',
+        [r] = 'r',
+        [b] = 'b',
+        [n] = 'n'
+};
+
 
 
 static char ascii_pieces[14] = ".PNBRQKpnbrqko";
