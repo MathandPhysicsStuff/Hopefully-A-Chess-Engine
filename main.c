@@ -74,8 +74,18 @@ int main()
     parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);
-    generate_moves(board, &GR);
+    //generate_moves(board, &GR);
     //print_attack_squares(board, &GR);
+
+    int move;
+    move = encode_move(e2, e4, 1, 1, 1, 1, 1);
+    printf("source square: %s\n", square_to_coords[get_move_source(move)]);
+    printf("target square: %s\n", square_to_coords[get_move_target(move)]);
+    printf("promoted piece: %c\n", promoted_pieces[get_move_promote(move)]);
+    printf("capture flage: %d\n", get_move_capture(move));
+    printf("double pawn flag: %d\n", get_move_double_pawn(move));
+    printf("enpassant flag: %d\n", get_move_enpassant(move));
+    printf("castling flag: %d\n", get_move_castling(move));
     
     //return 0;
 

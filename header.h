@@ -16,7 +16,7 @@
     0010 0000 0000 0000 0000 0000 caslting flag
 */
 
-#define set_move(source, target, promote, capture, double_pawn, enpassant, castling) \
+#define encode_move(source, target, promote, capture, double_pawn, enpassant, castling) \
 (                           \
     (source) |              \
     (target << 7)   |       \
@@ -29,17 +29,17 @@
 
 #define get_move_source(move) (move & 0x7F)
 
-#define get_move_target(move) ((move << 7) & 0x7F)
+#define get_move_target(move) ((move >> 7) & 0x7F)
 
-#define get_move_promote(move) ((move << 14) & 0xF)
+#define get_move_promote(move) ((move >> 14) & 0xF)
 
-#define get_move_capture(move) ((move << 18) & 0x1)
+#define get_move_capture(move) ((move >> 18) & 0x1)
 
-#define get_move_double_pawn(move) ((move << 19) & 0x1)
+#define get_move_double_pawn(move) ((move >> 19) & 0x1)
 
-#define get_move_enpassant(move) ((move << 20) & 0x1)
+#define get_move_enpassant(move) ((move >> 20) & 0x1)
 
-#define get_move_castling(move) ((move << 21) & 0x1)
+#define get_move_castling(move) ((move >> 21) & 0x1)
 
 enum boolean {False, TRUE};
 
