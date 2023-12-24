@@ -66,6 +66,9 @@ int main()
         GR.castling = 0,
 
     };
+
+    Moves move_list;
+    move_list.move_count = 0;
     
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
@@ -77,15 +80,19 @@ int main()
     //generate_moves(board, &GR);
     //print_attack_squares(board, &GR);
 
-    int move;
-    move = encode_move(e2, e4, 1, 1, 1, 1, 1);
-    printf("source square: %s\n", square_to_coords[get_move_source(move)]);
-    printf("target square: %s\n", square_to_coords[get_move_target(move)]);
-    printf("promoted piece: %c\n", promoted_pieces[get_move_promote(move)]);
-    printf("capture flage: %d\n", get_move_capture(move));
-    printf("double pawn flag: %d\n", get_move_double_pawn(move));
-    printf("enpassant flag: %d\n", get_move_enpassant(move));
-    printf("castling flag: %d\n", get_move_castling(move));
+    int move, move1, move2;
+    move1 = encode_move(e2, e4, 0, 0, 0, 0, 0);
+    move2 = encode_move(e7, e5, 0, 0, 0, 0, 0);
+
+    add_move(&move_list, move1);
+    add_move(&move_list, move2);
+    
+    printf("\n");
+    for (int i = 0; i < move_list.move_count; i++)
+    {
+        int print_move = move_list.moves[i];
+        printf("%d\n", print_move);
+    }
     
     //return 0;
 

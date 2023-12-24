@@ -126,13 +126,16 @@ typedef struct GameRules
     int side_to_move;
     int enpassant;
     int castling;
-    int knight_offsets[8];
-    int bishop_offsets[4];
-    int rook_offsets[4];
-    int king_offsets[8];
-    int queen_offsets[8];
 
 }GameRules;
+
+typedef struct Moves
+{
+    int moves[256];
+    int move_count;
+
+}Moves;
+
 
 //Draw board and pieces
 void print_board(int *board, GameRules *GR);
@@ -145,6 +148,7 @@ void parse_FEN(int *board, char *fen, GameRules *GR);
 //logic: rules of chess
 int is_square_attacked(int *board, GameRules *GR, int square);
 void generate_moves(int *board, GameRules *GR);
+void add_move(Moves *move_list, int move);
 
 //Engine: search eval;
 

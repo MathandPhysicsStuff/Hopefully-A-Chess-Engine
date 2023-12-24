@@ -392,8 +392,11 @@ void generate_moves(int *board, GameRules *GR)
     }
 }
 
-
-
+void add_move(Moves *move_list, int move)
+{
+    move_list->moves[move_list->move_count] = move;
+    move_list->move_count++;
+}
 
 
 
