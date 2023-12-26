@@ -74,25 +74,24 @@ int main()
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
     char test_position[] = "8/4n3/8/8/p3q2P/8/8/4N3 b - - 0 1";
-    parse_FEN(board, test_position, &GR); 
+    parse_FEN(board, debug_position, &GR); 
 
     print_board(board, &GR);
-    //generate_moves(board, &GR);
+    generate_moves(board, &GR, &move_list);
     //print_attack_squares(board, &GR);
 
     int move, move1, move2;
-    move1 = encode_move(e2, e4, 0, 0, 0, 0, 0);
-    move2 = encode_move(e7, e5, 0, 0, 0, 0, 0);
-
-    add_move(&move_list, move1);
-    add_move(&move_list, move2);
     
+    printf("%d\n", move_list.move_count);
+    
+    /* 
     printf("\n");
     for (int i = 0; i < move_list.move_count; i++)
     {
         int print_move = move_list.moves[i];
         printf("%d\n", print_move);
     }
+    */
     
     //return 0;
 

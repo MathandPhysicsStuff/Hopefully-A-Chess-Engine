@@ -83,9 +83,11 @@ int is_square_attacked(int *board, GameRules *GR, int square)
     return 0;
 }
 
-void generate_moves(int *board, GameRules *GR)
+void generate_moves(int *board, GameRules *GR, Moves *move_list)
 {
     int i, square, piece_offset, target_square;
+
+    move_list->move_count = 0;
 
     for (square = 0; square < 128; square++)
     {
@@ -99,18 +101,26 @@ void generate_moves(int *board, GameRules *GR)
                     {
                         if (square >= a7 && square <= h7)
                         {
-                            printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square - 16]);
-                            printf("%s %s=N\n", square_to_coords[square], square_to_coords[square - 16]);
-                            printf("%s %s=R\n", square_to_coords[square], square_to_coords[square - 16]);
-                            printf("%s %s=B\n", square_to_coords[square], square_to_coords[square - 16]);
+                            //source, target, promote, capture, double_pawn, enpassant, castling
+                            add_move(move_list, encode_move(square, target_square, Q, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, R, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, B, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, N, 0, 0, 0, 0));
+
+                            //printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square - 16]);
+                            //printf("%s %s=N\n", square_to_coords[square], square_to_coords[square - 16]);
+                            //printf("%s %s=R\n", square_to_coords[square], square_to_coords[square - 16]);
+                            //printf("%s %s=B\n", square_to_coords[square], square_to_coords[square - 16]);
                         }
                         
                         else
                         {
-                            printf("%s %s\n", square_to_coords[square], square_to_coords[square - 16]);
+                            add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                            //printf("%s %s\n", square_to_coords[square], square_to_coords[square - 16]);
                             if (square >= a2 && square <= h2 && board[square - 32] == e)
                             {
-                                printf("%s %s\n", square_to_coords[square], square_to_coords[square - 32]);
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 1, 0));
+                                //printf("%s %s\n", square_to_coords[square], square_to_coords[square - 32]);
                             }
                         }
                     }
@@ -127,19 +137,26 @@ void generate_moves(int *board, GameRules *GR)
                             {
                                 if((square >= a7 && square <= h7) && (board[target_square] >= p && board[target_square] <= k))
                                 {
-                                    printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
+                                    add_move(move_list, encode_move(square, target_square, Q, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, R, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, B, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, N, 1, 0, 0, 0));
+
+                                    //printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
 
                                 if(board[target_square] >= p && board[target_square] <= k)
                                 {
-                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                    add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                    //printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
 
                                 if(target_square == GR->enpassant)
                                 {
+                                    add_move(move_list, encode_move(square, target_square, 0, 1, 0, 1, 0));
                                     printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
                             }
@@ -155,7 +172,8 @@ void generate_moves(int *board, GameRules *GR)
                         {
                             GR->side_to_move = Black;
                             if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, f1) == 0)
-                                printf("0-0\n");
+                                add_move(move_list, encode_move(e1, g1, 0, 0, 0, 0, 1));
+                                //printf("0-0\n");
                                 GR->side_to_move = White;
                         }
                     }
@@ -166,7 +184,8 @@ void generate_moves(int *board, GameRules *GR)
                         {
                             GR->side_to_move = Black;
                             if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, d1) == 0)
-                                printf("0-0-0\n");
+                                add_move(move_list, encode_move(e1, c1, 0, 0, 0, 0, 1));
+                                //printf("0-0-0\n");
                                 GR->side_to_move = White;
                         }
                     }
@@ -181,17 +200,24 @@ void generate_moves(int *board, GameRules *GR)
                     {
                         if (square >= a2 && square <= h2)
                         {
-                            printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square + 16]);
-                            printf("%s %s=N\n", square_to_coords[square], square_to_coords[square + 16]);
-                            printf("%s %s=R\n", square_to_coords[square], square_to_coords[square + 16]);
-                            printf("%s %s=B\n", square_to_coords[square], square_to_coords[square + 16]);
+                            add_move(move_list, encode_move(square, target_square, q, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, r, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, b, 0, 0, 0, 0));
+                            add_move(move_list, encode_move(square, target_square, n, 0, 0, 0, 0));
+
+                            //printf("%s %s=Q\n", square_to_coords[square], square_to_coords[square + 16]);
+                            //printf("%s %s=N\n", square_to_coords[square], square_to_coords[square + 16]);
+                            //printf("%s %s=R\n", square_to_coords[square], square_to_coords[square + 16]);
+                            //printf("%s %s=B\n", square_to_coords[square], square_to_coords[square + 16]);
                         }
                         
                         else
                         {
-                            printf("%s %s\n", square_to_coords[square], square_to_coords[square + 16]);
+                            add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                            //printf("%s %s\n", square_to_coords[square], square_to_coords[square + 16]);
                             if (square >= a7 && square <= h7 && board[square + 32] == e)
                             {
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 1, 0, 0));
                                 printf("%s %s\n", square_to_coords[square], square_to_coords[square + 32]);
                             }
                         }
@@ -209,20 +235,27 @@ void generate_moves(int *board, GameRules *GR)
                             {
                                 if((square >= a2 && square <= h2) && (board[target_square] >= P && board[target_square] <= K))
                                 {
-                                    printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
-                                    printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
+                                    add_move(move_list, encode_move(square, target_square, q, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, r, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, b, 1, 0, 0, 0));
+                                    add_move(move_list, encode_move(square, target_square, n, 1, 0, 0, 0));
+
+                                    //printf("%sx%s=Q\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=N\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=R\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s=B\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
 
                                 if(board[target_square] >= K && board[target_square] <= K)
                                 {
-                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                    add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                    //printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
 
                                 if(target_square == GR->enpassant)
                                 {
-                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                    add_move(move_list, encode_move(square, target_square, 0, 1, 0, 1, 0));
+                                    //printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
                             }
                         }
@@ -237,7 +270,8 @@ void generate_moves(int *board, GameRules *GR)
                         {
                             GR->side_to_move = White;
                             if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, f8) == 0)
-                                printf("0-0\n");
+                                add_move(move_list, encode_move(e8, g8, 0, 0, 0, 0, 1));
+                                //printf("0-0\n");
                                 GR->side_to_move = Black;
                         }
                     }
@@ -248,7 +282,8 @@ void generate_moves(int *board, GameRules *GR)
                         {
                             GR->side_to_move = White;
                             if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, d8) == 0)
-                                printf("0-0-0\n");
+                                add_move(move_list, encode_move(e8, c8, 0, 0, 0, 0, 1));
+                                //printf("0-0-0\n");
                                 GR->side_to_move = Black;
                         }
                     }
@@ -271,9 +306,11 @@ void generate_moves(int *board, GameRules *GR)
                             )
                         {
                             if (piece_offset != e)
-                                printf("Nx%s\n", square_to_coords[target_square]);
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Nx%s\n", square_to_coords[target_square]);
                             else
-                                printf("N%s\n", square_to_coords[target_square]);
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("N%s\n", square_to_coords[target_square]);
                         }
                     }
                 }
@@ -295,9 +332,11 @@ void generate_moves(int *board, GameRules *GR)
                             )
                         {
                             if (piece_offset != e)
-                                printf("Kx%s\n", square_to_coords[target_square]);
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Kx%s\n", square_to_coords[target_square]);
                             else
-                                printf("K%s\n", square_to_coords[target_square]);
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("K%s\n", square_to_coords[target_square]);
                         }
                     }
                 }
@@ -329,16 +368,32 @@ void generate_moves(int *board, GameRules *GR)
                             (piece_offset >= P && piece_offset <= K)
                            )
                         {
-                            if(board[square] == b || board[square] == B) printf("Bx%s\n", square_to_coords[target_square]);
-                            if(board[square] == q || board[square] == Q) printf("Qx%s\n", square_to_coords[target_square]);
+                            if(board[square] == b || board[square] == B) 
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Bx%s\n", square_to_coords[target_square]);
+                            }
+                            if(board[square] == q || board[square] == Q)
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Qx%s\n", square_to_coords[target_square]);
+                            }
                             break; 
                         }
 
 
                         if (piece_offset == e)
                         {
-                            if(board[square] == b || board[square] == B) printf("B%s\n", square_to_coords[target_square]);
-                            if(board[square] == q || board[square] == Q) printf("Q%s\n", square_to_coords[target_square]);
+                            if(board[square] == b || board[square] == B)
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("B%s\n", square_to_coords[target_square]);
+                            }
+                            if(board[square] == q || board[square] == Q)
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("Q%s\n", square_to_coords[target_square]);
+                            }
                         }
 
                         target_square += bishop_offsets[i];
@@ -372,16 +427,32 @@ void generate_moves(int *board, GameRules *GR)
                             (piece_offset >= P && piece_offset <= K)
                            )
                         {
-                            if(board[square] == r || board[square] == R) printf("Rx%s\n", square_to_coords[target_square]);
-                            if(board[square] == q || board[square] == Q) printf("Qx%s\n", square_to_coords[target_square]);
+                            if(board[square] == r || board[square] == R) 
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Rx%s\n", square_to_coords[target_square]);
+                            }
+                            if(board[square] == q || board[square] == Q)
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 1, 0, 0, 0));
+                                //printf("Qx%s\n", square_to_coords[target_square]);
+                            }
                             break; 
                         }
 
 
                         if (piece_offset == e)
                         {
-                            if(board[square] == r || board[square] == R) printf("R%s\n", square_to_coords[target_square]);
-                            if(board[square] == q || board[square] == Q) printf("Q%s\n", square_to_coords[target_square]);
+                            if(board[square] == r || board[square] == R)
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("R%s\n", square_to_coords[target_square]);
+                            }
+                            if(board[square] == q || board[square] == Q) 
+                            {
+                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 0, 0));
+                                //printf("Q%s\n", square_to_coords[target_square]);
+                            }
                         }
 
                         target_square += rook_offsets[i];
