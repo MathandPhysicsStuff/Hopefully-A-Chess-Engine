@@ -281,8 +281,25 @@ void parse_FEN(int *board, char *fen, GameRules *GR)
     //printf("%c\n", *fen);
 }
 
+void print_move_list(Moves *move_list)
+{
+    int i, move;
 
-
+    printf("\n");
+    printf(" move  |  promotion | capture | double_pawn | enpassant | castling\n");
+    for (i = 0; i < move_list->move_count; i++)
+    {
+        move = move_list->moves[i];
+        printf(" %s-%s ", square_to_coords[get_move_source(move)],  square_to_coords[get_move_target(move)]);
+        printf(" %c ", promoted_pieces[get_move_promote(move)]);
+        printf(" %d ", get_move_capture(move));
+        printf(" %d ", get_move_double_pawn(move));
+        printf(" %d ", get_move_enpassant(move));
+        printf(" %d\n", get_move_castling(move));
+    }
+    printf("\n");
+    printf(" number of legal moves: %d\n", move_list->move_count);
+}
 
 
 

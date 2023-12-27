@@ -24,7 +24,7 @@ int board[128] =
 };
 
 char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+char debug_position[] = "r3k2r/p1Ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
 
 int main()
 {
@@ -82,19 +82,8 @@ int main()
 
     int move, move1, move2;
     
-    printf("%d\n", move_list.move_count);
+    print_move_list(&move_list);    
     
-    /* 
-    printf("\n");
-    for (int i = 0; i < move_list.move_count; i++)
-    {
-        int print_move = move_list.moves[i];
-        printf("%d\n", print_move);
-    }
-    */
-    
-    //return 0;
-
     SDL_bool running = SDL_TRUE;
     while (running)
     {

@@ -144,6 +144,7 @@ void draw_board(SDL_Renderer* renderer, DrawGame* G);
 void draw_pieces(int *board, SDL_Renderer *renderer, DrawGame *G, SDL_Texture *image, SDL_Rect piece_src_rect, SDL_Rect piece_dst_rect);
 void reset_board(int *board, GameRules *GR);
 void parse_FEN(int *board, char *fen, GameRules *GR);
+void print_move_list(Moves *move_list);
 
 //logic: rules of chess
 int is_square_attacked(int *board, GameRules *GR, int square);
