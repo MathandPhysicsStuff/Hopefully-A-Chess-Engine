@@ -82,7 +82,7 @@ int main()
 
     int move, move1, move2;
     
-    print_move_list(&move_list);    
+    //print_move_list(&move_list);    
     
     SDL_bool running = SDL_TRUE;
     while (running)

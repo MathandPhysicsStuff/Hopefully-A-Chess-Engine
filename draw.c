@@ -163,6 +163,7 @@ void print_board(int *board, GameRules *GR)
     printf("%c\n", (GR->castling & qc) ? 'q' : '-');
 
     printf(" Enpassant: %s\n", (GR->enpassant == no_square) ? " ": square_to_coords[GR->enpassant]);
+    printf(" King square: %s\n", square_to_coords[GR->king_square[GR->side_to_move]]);
 }
 
 void print_attack_squares(int *board, GameRules *GR)
@@ -225,7 +226,13 @@ void parse_FEN(int *board, char *fen, GameRules *GR)
             if (!(square & 0x88))
             {
                 if ((*fen >= 'a' && *fen <= 'z') || (*fen >= 'A' && *fen <= 'Z'))
-                {
+                { 
+                    if (*fen == 'K')
+                        GR->king_square[White] = square;
+
+                    else if (*fen == 'k')
+                        GR->king_square[Black] = square;
+
                     board[square] = char_pieces[*fen];
                     fen++;
                 }
@@ -286,15 +293,15 @@ void print_move_list(Moves *move_list)
     int i, move;
 
     printf("\n");
-    printf(" move  |  promotion | capture | double_pawn | enpassant | castling\n");
+    printf(" move  |   promotion | capture | double_pawn | enpassant | castling\n");
     for (i = 0; i < move_list->move_count; i++)
     {
         move = move_list->moves[i];
-        printf(" %s-%s ", square_to_coords[get_move_source(move)],  square_to_coords[get_move_target(move)]);
-        printf(" %c ", promoted_pieces[get_move_promote(move)]);
-        printf(" %d ", get_move_capture(move));
-        printf(" %d ", get_move_double_pawn(move));
-        printf(" %d ", get_move_enpassant(move));
+        printf(" %s-%s |", square_to_coords[get_move_source(move)],  square_to_coords[get_move_target(move)]);
+        printf("   %c         |", get_move_promote(move) ? promoted_pieces[get_move_promote(move)] : ' ');
+        printf(" %d       |", get_move_capture(move));
+        printf(" %d           |", get_move_double_pawn(move));
+        printf(" %d         |", get_move_enpassant(move));
         printf(" %d\n", get_move_castling(move));
     }
     printf("\n");

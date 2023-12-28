@@ -126,6 +126,7 @@ typedef struct GameRules
     int side_to_move;
     int enpassant;
     int castling;
+    int king_square[2];
 
 }GameRules;
 
