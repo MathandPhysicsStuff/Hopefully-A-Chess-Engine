@@ -2,6 +2,7 @@
 #define HEADER_H
 
 #include <stdio.h>
+#include <string.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -153,6 +154,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list);
 void add_move(Moves *move_list, int move);
 
 //Engine: search eval;
+int make_move(int *board, GameRules *GR, int move);
 
 #endif
 

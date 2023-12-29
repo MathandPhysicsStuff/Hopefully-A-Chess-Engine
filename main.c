@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
@@ -66,6 +67,8 @@ int main()
         GR.castling = 0,
 
     };
+    GR.king_square[0] = e1;
+    GR.king_square[1] = e8;
 
     Moves move_list;
     move_list.move_count = 0;
@@ -79,11 +82,18 @@ int main()
     print_board(board, &GR);
     generate_moves(board, &GR, &move_list);
     //print_attack_squares(board, &GR);
-
-    int move, move1, move2;
-    
+       
     //print_move_list(&move_list);    
-    
+     
+    int board_copy[128];
+    GameRules Copy;
+
+    memcpy(board_copy, board, 512);
+    Copy.side_to_move = GR.side_to_move;
+    Copy.enpassant = GR.enpassant;
+    Copy.castling = GR.castling;
+    memcpy(Copy.king_square, GR.king_square, 8);
+
     SDL_bool running = SDL_TRUE;
     while (running)
     {
