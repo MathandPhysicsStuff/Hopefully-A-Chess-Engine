@@ -25,7 +25,7 @@ int board[128] =
 };
 
 char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-char debug_position[] = "r3k2r/p1Ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
 
 int main()
 {
@@ -76,23 +76,21 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "8/4n3/8/8/p3q2P/8/8/4N3 b - - 0 1";
-    parse_FEN(board, debug_position, &GR); 
+    char test_position[] = "1r5b/2P3P1/8/2K1k3/8/8/2p2p2/1Q2N3 w - - 0 1";
+    parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);
     generate_moves(board, &GR, &move_list);
     //print_attack_squares(board, &GR);
        
     //print_move_list(&move_list);    
-     
-    int board_copy[128];
-    GameRules Copy;
+    
+    //source, target, promote, capture, double_pawn, enpassant, castling 
+    int move = encode_move(c7, c8, Q, 0, 0, 0, 0);
 
-    memcpy(board_copy, board, 512);
-    Copy.side_to_move = GR.side_to_move;
-    Copy.enpassant = GR.enpassant;
-    Copy.castling = GR.castling;
-    memcpy(Copy.king_square, GR.king_square, 8);
+    make_move(board, &GR, move);
+
+    print_board(board, &GR);
 
     SDL_bool running = SDL_TRUE;
     while (running)
