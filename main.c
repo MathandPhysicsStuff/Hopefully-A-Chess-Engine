@@ -76,7 +76,7 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "1r5b/2P3P1/8/2K1k3/8/8/2p2p2/1Q2N3 w - - 0 1";
+    char test_position[] = "4k3/ppp1pppp/8/8/3p4/8/PPPPPPPP/4K3 w - - 0 1";
     parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);
@@ -86,7 +86,7 @@ int main()
     //print_move_list(&move_list);    
     
     //source, target, promote, capture, double_pawn, enpassant, castling 
-    int move = encode_move(c7, c8, Q, 0, 0, 0, 0);
+    int move = encode_move(e2, e4, 0, 0, 1, 0, 0);
 
     make_move(board, &GR, move);
 

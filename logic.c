@@ -157,7 +157,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                                 if(target_square == GR->enpassant)
                                 {
                                     add_move(move_list, encode_move(square, target_square, 0, 1, 0, 1, 0));
-                                    printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
+                                    //printf("%sx%s\n", square_to_coords[square], square_to_coords[target_square]);
                                 }
                             }
                         }
@@ -218,7 +218,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                             if (square >= a7 && square <= h7 && board[square + 32] == e)
                             {
                                 add_move(move_list, encode_move(square, target_square, 0, 0, 1, 0, 0));
-                                printf("%s %s\n", square_to_coords[square], square_to_coords[square + 32]);
+                                //printf("%s %s\n", square_to_coords[square], square_to_coords[square + 32]);
                             }
                         }
                     }
