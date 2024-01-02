@@ -17,6 +17,7 @@ int make_move(int *board, GameRules *GR, int move)
     int promoted_piece = get_move_promote(move);
     int enpassant = get_move_enpassant(move);
     int double_pawn = get_move_double_pawn(move);
+    int castling = get_move_castling(move);
 
     board[target_square] = board[source_square];
     board[source_square] = e;
@@ -38,6 +39,45 @@ int make_move(int *board, GameRules *GR, int move)
     {
         (GR->side_to_move == White ? (GR->enpassant = target_square + 16) : (GR->enpassant = target_square - 16));
     }
+
+    if (castling)
+    {
+        switch (target_square)
+        {
+            case g1:
+                board[f1] = board[h1];
+                board[h1] = e;
+                break;
+
+            case c1:
+                board[d1] = board[a1];
+                board[a1] = e;
+                break;
+
+            case g8:
+                board[f8] = board[h8];
+                board[h8] = e;
+                break;
+
+            case c8:
+                board[d8] = board[a8];
+                board[a8] = e;
+                break;
+        }
+    }
+
+    if (board[target_square] == K || board[target_square] == k)
+    {
+        GR->king_square[GR->side_to_move] = target_square;
+    }
+
+    if (board[e1] != K) GR->castling &= 0xC;
+    if (board[a1] != R) GR->castling &= 0xD;
+    if (board[h1] != R) GR->castling &= 0xE;
+    if (board[e8] != k) GR->castling &= 0x3;
+    if (board[a8] != r) GR->castling &= 0xB;
+    if (board[h8] != r) GR->castling &= 0x7;
+
 
     printf("\nmove: %s %s\n", square_to_coords[source_square],  square_to_coords[target_square]);
 

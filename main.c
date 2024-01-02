@@ -25,7 +25,7 @@ int board[128] =
 };
 
 char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
+char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1";
 
 int main()
 {
@@ -76,7 +76,7 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "4k3/ppp1pppp/8/8/3p4/8/PPPPPPPP/4K3 w - - 0 1";
+    char test_position[] = "r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1";
     parse_FEN(board, test_position, &GR); 
 
     print_board(board, &GR);
@@ -86,10 +86,10 @@ int main()
     //print_move_list(&move_list);    
     
     //source, target, promote, capture, double_pawn, enpassant, castling 
-    int move = encode_move(e2, e4, 0, 0, 1, 0, 0);
+    int move = encode_move(e1, d1, 0, 0, 0, 0, 0);
+    int move2 = encode_move(d1, e1, 0, 0, 0, 0, 0);
 
     make_move(board, &GR, move);
-
     print_board(board, &GR);
 
     SDL_bool running = SDL_TRUE;
