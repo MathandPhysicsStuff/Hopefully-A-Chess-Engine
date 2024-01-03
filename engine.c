@@ -78,6 +78,21 @@ int make_move(int *board, GameRules *GR, int move)
     if (board[a8] != r) GR->castling &= 0xB;
     if (board[h8] != r) GR->castling &= 0x7;
 
+    GR->side_to_move ^= 1; 
+
+    if (is_square_attacked(board, GR->side_to_move, GR->king_square[GR->side_to_move ^ 1]))
+    {
+        memcpy(board, board_copy, 512);
+        GR->side_to_move = Copy.side_to_move;
+        GR->enpassant = Copy.enpassant;
+        GR->castling = Copy.castling;
+        memcpy(GR->king_square, Copy.king_square, 8);
+       
+        return 0;
+    }
+
+    else
+        return 1;
 
     printf("\nmove: %s %s\n", square_to_coords[source_square],  square_to_coords[target_square]);
 

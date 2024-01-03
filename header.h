@@ -149,7 +149,7 @@ void parse_FEN(int *board, char *fen, GameRules *GR);
 void print_move_list(Moves *move_list);
 
 //logic: rules of chess
-int is_square_attacked(int *board, GameRules *GR, int square);
+int is_square_attacked(int *board, int side_to_move, int square);
 void generate_moves(int *board, GameRules *GR, Moves *move_list);
 void add_move(Moves *move_list, int move);
 

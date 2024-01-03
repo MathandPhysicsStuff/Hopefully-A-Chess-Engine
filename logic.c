@@ -1,11 +1,11 @@
 #include "header.h"
 
 
-int is_square_attacked(int *board, GameRules *GR, int square)
+int is_square_attacked(int *board, int side_to_move, int square)
 {
     int i, j, target_square, target_piece;
 
-    if (GR->side_to_move == White)
+    if (side_to_move == White)
     {
         if(!((square + 17) & 0x88) && (board[square + 17] == P)) return 1;
         if(!((square + 15) & 0x88) && (board[square + 15] == P)) return 1;
@@ -24,7 +24,7 @@ int is_square_attacked(int *board, GameRules *GR, int square)
         
         if (!(target_square & 0x88))
         {
-            if(GR->side_to_move == White ? target_piece == N : target_piece == n)
+            if(side_to_move == White ? target_piece == N : target_piece == n)
                 return 1;
         }
     }
@@ -36,7 +36,7 @@ int is_square_attacked(int *board, GameRules *GR, int square)
         
         if (!(target_square & 0x88))
         {
-            if(GR->side_to_move == White ? target_piece == K : target_piece == k)
+            if(side_to_move == White ? target_piece == K : target_piece == k)
                 return 1;
         }
     }
@@ -50,7 +50,7 @@ int is_square_attacked(int *board, GameRules *GR, int square)
         {
             target_piece = board[target_square];
 
-            if(GR->side_to_move == White ? (target_piece == R || target_piece == Q) : (target_piece == r || target_piece == q))
+            if(side_to_move == White ? (target_piece == R || target_piece == Q) : (target_piece == r || target_piece == q))
                 return 1; 
 
             if (target_piece != e)
@@ -69,7 +69,7 @@ int is_square_attacked(int *board, GameRules *GR, int square)
         {
             target_piece = board[target_square];
 
-            if(GR->side_to_move == White ? (target_piece == B || target_piece == Q) : (target_piece == b || target_piece == q))
+            if(side_to_move == White ? (target_piece == B || target_piece == Q) : (target_piece == b || target_piece == q))
                 return 1; 
 
             if (target_piece != e)
@@ -171,7 +171,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                         if (board[f1] == e && board[g1] == e && board[h1] == R)
                         {
                             GR->side_to_move = Black;
-                            if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, f1) == 0)
+                            if(is_square_attacked(board, GR->side_to_move, e1) == 0 && is_square_attacked(board, GR->side_to_move, f1) == 0)
                                 add_move(move_list, encode_move(e1, g1, 0, 0, 0, 0, 1));
                                 //printf("0-0\n");
                                 GR->side_to_move = White;
@@ -183,7 +183,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                         if (board[d1] == e && board[c1] == e && board[b1] == e && board[a1] == R)
                         {
                             GR->side_to_move = Black;
-                            if(is_square_attacked(board, GR, e1) == 0 && is_square_attacked(board, GR, d1) == 0)
+                            if(is_square_attacked(board, GR->side_to_move, e1) == 0 && is_square_attacked(board, GR->side_to_move, d1) == 0)
                                 add_move(move_list, encode_move(e1, c1, 0, 0, 0, 0, 1));
                                 //printf("0-0-0\n");
                                 GR->side_to_move = White;
@@ -269,7 +269,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                         if (board[f8] == e && board[g8] == e && board[h8] == r)
                         {
                             GR->side_to_move = White;
-                            if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, f8) == 0)
+                            if(is_square_attacked(board, GR->side_to_move, e8) == 0 && is_square_attacked(board, GR->side_to_move, f8) == 0)
                                 add_move(move_list, encode_move(e8, g8, 0, 0, 0, 0, 1));
                                 //printf("0-0\n");
                                 GR->side_to_move = Black;
@@ -281,7 +281,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                         if (board[d8] == e && board[c8] == e && board[b8] == e && board[a8] == r)
                         {
                             GR->side_to_move = White;
-                            if(is_square_attacked(board, GR, e8) == 0 && is_square_attacked(board, GR, d8) == 0)
+                            if(is_square_attacked(board, GR->side_to_move, e8) == 0 && is_square_attacked(board, GR->side_to_move, d8) == 0)
                                 add_move(move_list, encode_move(e8, c8, 0, 0, 0, 0, 1));
                                 //printf("0-0-0\n");
                                 GR->side_to_move = Black;
