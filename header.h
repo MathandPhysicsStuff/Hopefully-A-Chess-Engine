@@ -50,6 +50,8 @@ enum castling {KC = 1, QC = 2, kc = 4, qc = 8};
 
 enum side {White, Black};
 
+enum capture_flags {all_moves, only_captures};
+
 enum squares 
 {
     a8 = 0, b8, c8, d8, e8, f8, g8, h8,
@@ -154,7 +156,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list);
 void add_move(Moves *move_list, int move);
 
 //Engine: search eval;
-int make_move(int *board, GameRules *GR, int move);
+int make_move(int *board, GameRules *GR, int move, int capture_flag);
 
 #endif
 

@@ -77,7 +77,7 @@ int main()
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
     char test_position[] = "rnbqkbnr/pppppppp/8/8/8/3n4/PPPPPPPP/RNBQK2R w KQkq - 0 1";
-    parse_FEN(board, test_position, &GR); 
+    parse_FEN(board, debug_position, &GR); 
 
     print_board(board, &GR);
     generate_moves(board, &GR, &move_list);
@@ -86,10 +86,10 @@ int main()
     //print_move_list(&move_list);    
     
     //source, target, promote, capture, double_pawn, enpassant, castling 
-    int move = encode_move(e1, g1, 0, 0, 0, 0, 1);
+    int move = encode_move(d5, e6, 0, 1, 0, 0, 0);
     int move2 = encode_move(d1, e1, 0, 0, 0, 0, 0);
 
-    printf("\nreturn value: %d \n", make_move(board, &GR, move));
+    make_move(board, &GR, move, only_captures);
     print_board(board, &GR);
 
     SDL_bool running = SDL_TRUE;

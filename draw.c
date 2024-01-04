@@ -180,7 +180,7 @@ void print_attack_squares(int *board, GameRules *GR)
             square = 16*rank + file;
 
             if (!(square & 0x88))
-                printf("%c ", is_square_attacked(board, GR, square) ? 'x' : '.');
+                printf("%c ", is_square_attacked(board, GR->side_to_move, square) ? 'x' : '.');
         }
         printf("\n");
     }
