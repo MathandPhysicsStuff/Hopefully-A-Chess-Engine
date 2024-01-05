@@ -29,7 +29,6 @@ char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R
 
 int main()
 {
-    /*
     if (SDL_Init(SDL_INIT_VIDEO) < 0) printf("SDL2 video failed to initialize: \n", SDL_GetError());
     else printf("System is ready to go!\n");
 
@@ -51,7 +50,6 @@ int main()
     if (!image) { printf("Image not loaded.\n"); }
 
     SDL_Texture* texturePGN = SDL_CreateTextureFromSurface(renderer, image);
-    */
 
     DrawGame G = 
     {
@@ -75,13 +73,23 @@ int main()
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
-    char test_position[] = "rnbqkbnr/pppppppp/8/8/8/3n4/PPPPPPPP/RNBQK2R w KQkq - 0 1";
+    char test_position[] = "8/2p5/3p4/KP5r/1R3p1k/8/4P1P1/8 w - - ";
+    char test2_position[] = "rnbq1k1r/pp1Pbppp/2p5/8/2B5/8/PPP1NnPP/RNBQK2R w KQ - 1 8";
     parse_FEN(board, start_position, &GR); 
 
-    int depth = 1;
-    perft_driver(board, &GR, depth);
-
-    /*
+    int depth = 5;
+    long node = 0;
+    
+    int BOOL = 0; 
+    
+    if (BOOL == 0)
+    {
+        perft_driver(board, &GR, depth, &node);
+        printf("%ld\n", node);
+    } 
+    
+    if (BOOL == 1)
+    {
     SDL_bool running = SDL_TRUE;
     while (running)
     {
@@ -108,19 +116,20 @@ int main()
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
 
+        render_perft_driver(board, &GR, depth, &node, renderer, &G, texturePGN, piece_dst_rect, piece_src_rect);
 
-        draw_board(renderer, &G);
-        draw_pieces(board, renderer, &G, texturePGN, piece_dst_rect, piece_src_rect);
+        //draw_board(renderer, &G);
+        //draw_pieces(board, renderer, &G, texturePGN, piece_dst_rect, piece_src_rect);
 
         SDL_RenderPresent(renderer);
         SDL_Delay(100);
     }
-    
+    }
+
     //freeing stuff 
     IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_Quit();
-    */
 }
 
 

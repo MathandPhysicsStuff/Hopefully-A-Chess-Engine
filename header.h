@@ -107,6 +107,7 @@ static int promoted_pieces[] =
 
 
 static char ascii_pieces[14] = ".PNBRQKpnbrqko";
+static char *unicode_pieces[] = {".", "♙", "♘", "♗", "♖", "♕", "♔", "♟︎", "♞", "♝", "♜", "♛", "♚"};
 
 static int knight_offsets[8] = {33, 31, 18, 14, -33, -31, -18, -14};
 static int bishop_offsets[4] = {17, 15, -17, -15};
@@ -114,6 +115,17 @@ static int rook_offsets[4]  = {1, -1, 16, -16};
 static int queen_offsets[8] = {1, -1, 16, -16, 17, 15, -17, -15};
 static int king_offsets[8] = {1, -1, 16, -16, 17, 15, -17, -15};
 
+static int castling_rights[128] =
+{
+    7, 15, 15, 15, 3, 15, 15, 11, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    15, 15, 15, 15, 15, 15, 15, 15, o, o, o, o, o, o, o, o,
+    13, 15, 15, 15, 12, 15, 15, 14, o, o, o, o, o, o, o, o
+};
 
 typedef struct DrawGame
 {
@@ -157,8 +169,10 @@ void add_move(Moves *move_list, int move);
 
 //Engine: search eval;
 int make_move(int *board, GameRules *GR, int move, int capture_flag);
-void perft_driver(int *board, GameRules *GR, int depth);
-
+void perft_driver(int *board, GameRules *GR, int depth, long *node);
+void render_perft_driver(int *board, GameRules *GR, int depth, long *node,
+                         SDL_Renderer *renderer, DrawGame *G, SDL_Texture *image,
+                         SDL_Rect piece_src_rect, SDL_Rect piece_dst_rect);
 #endif
 
 
