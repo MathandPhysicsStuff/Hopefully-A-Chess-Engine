@@ -97,6 +97,8 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
             {
                 if (board[square] == P)
                 {
+                    target_square = square - 16;
+
                     if (!(!(square - 16) & 0x88) && (board[square - 16] == e))
                     {
                         if (square >= a7 && square <= h7)
@@ -119,7 +121,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                             //printf("%s %s\n", square_to_coords[square], square_to_coords[square - 16]);
                             if (square >= a2 && square <= h2 && board[square - 32] == e)
                             {
-                                add_move(move_list, encode_move(square, target_square, 0, 0, 0, 1, 0));
+                                add_move(move_list, encode_move(square, square - 32, 0, 0, 0, 1, 0));
                                 //printf("%s %s\n", square_to_coords[square], square_to_coords[square - 32]);
                             }
                         }
@@ -196,6 +198,8 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
             {
                 if (board[square] == p)
                 {
+                    target_square = square + 16;
+
                     if (!(!(square + 16) & 0x88) && (board[square + 16] == e))
                     {
                         if (square >= a2 && square <= h2)
@@ -217,7 +221,7 @@ void generate_moves(int *board, GameRules *GR, Moves *move_list)
                             //printf("%s %s\n", square_to_coords[square], square_to_coords[square + 16]);
                             if (square >= a7 && square <= h7 && board[square + 32] == e)
                             {
-                                add_move(move_list, encode_move(square, target_square, 0, 0, 1, 0, 0));
+                                add_move(move_list, encode_move(square, square + 32, 0, 0, 1, 0, 0));
                                 //printf("%s %s\n", square_to_coords[square], square_to_coords[square + 32]);
                             }
                         }

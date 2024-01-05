@@ -157,6 +157,7 @@ void add_move(Moves *move_list, int move);
 
 //Engine: search eval;
 int make_move(int *board, GameRules *GR, int move, int capture_flag);
+void perft_driver(int *board, GameRules *GR, int depth);
 
 #endif
 

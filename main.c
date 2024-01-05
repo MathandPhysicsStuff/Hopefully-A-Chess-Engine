@@ -25,10 +25,11 @@ int board[128] =
 };
 
 char start_position[] = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R b KQkq - 0 1";
+char debug_position[] = "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq - 0 1";
 
 int main()
 {
+    /*
     if (SDL_Init(SDL_INIT_VIDEO) < 0) printf("SDL2 video failed to initialize: \n", SDL_GetError());
     else printf("System is ready to go!\n");
 
@@ -50,7 +51,8 @@ int main()
     if (!image) { printf("Image not loaded.\n"); }
 
     SDL_Texture* texturePGN = SDL_CreateTextureFromSurface(renderer, image);
-   
+    */
+
     DrawGame G = 
     {
         G.screen_width = SCREEN_WIDTH,
@@ -70,28 +72,16 @@ int main()
     GR.king_square[0] = e1;
     GR.king_square[1] = e8;
 
-    Moves move_list;
-    move_list.move_count = 0;
-    
     SDL_Rect piece_src_rect = {0, 0, 60, 60}; 
     SDL_Rect piece_dst_rect = {0, 0, G.scale, G.scale}; 
 
     char test_position[] = "rnbqkbnr/pppppppp/8/8/8/3n4/PPPPPPPP/RNBQK2R w KQkq - 0 1";
-    parse_FEN(board, debug_position, &GR); 
+    parse_FEN(board, start_position, &GR); 
 
-    print_board(board, &GR);
-    generate_moves(board, &GR, &move_list);
-    //print_attack_squares(board, &GR);
-       
-    //print_move_list(&move_list);    
-    
-    //source, target, promote, capture, double_pawn, enpassant, castling 
-    int move = encode_move(d5, e6, 0, 1, 0, 0, 0);
-    int move2 = encode_move(d1, e1, 0, 0, 0, 0, 0);
+    int depth = 1;
+    perft_driver(board, &GR, depth);
 
-    make_move(board, &GR, move, only_captures);
-    print_board(board, &GR);
-
+    /*
     SDL_bool running = SDL_TRUE;
     while (running)
     {
@@ -130,6 +120,7 @@ int main()
     IMG_Quit();
     SDL_DestroyWindow(window);
     SDL_Quit();
+    */
 }
 
 

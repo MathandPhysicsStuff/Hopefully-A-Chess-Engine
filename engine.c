@@ -114,6 +114,54 @@ int make_move(int *board, GameRules *GR, int move, int capture_flag)
 }
 
 
+void perft_driver(int *board, GameRules *GR, int depth)
+{
+    if (depth == 0)
+        return;
+
+    int move, move_counter;
+    Moves move_list;
+    move_list.move_count = 0;
+
+    //print_board(board, GR);
+
+    generate_moves(board, GR, &move_list);
+
+    //print_attack_squares(board, &GR);
+    //print_move_list(&move_list);   
+    
+    for (move_counter = 0; move_counter < move_list.move_count; move_counter++)
+    {
+
+        int board_copy[128];
+        GameRules Copy;
+
+        //copy game state
+        memcpy(board_copy, board, 512);
+        Copy.side_to_move = GR->side_to_move;
+        Copy.enpassant = GR->enpassant;
+        Copy.castling = GR->castling;
+        memcpy(Copy.king_square, GR->king_square, 8);
+
+        print_board(board, GR);
+
+        //source, target, promote, capture, double_pawn, enpassant, castling 
+        if (!make_move(board, GR, move_list.moves[move_counter], all_moves))
+            continue;
+
+        print_board(board, GR);
+        getchar();
+
+        perft_driver(board, GR, depth - 1);
+
+        //reset game state
+        memcpy(board, board_copy, 512);
+        GR->side_to_move = Copy.side_to_move;
+        GR->enpassant = Copy.enpassant;
+        GR->castling = Copy.castling;
+        memcpy(GR->king_square, Copy.king_square, 8);
+    }
+}
 
 
 
